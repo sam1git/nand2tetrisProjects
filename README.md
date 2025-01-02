@@ -94,5 +94,5 @@ To run the individual projects in this repository, follow the instructions below
 
 1. Clone this repository to your local machine:
    ```bash
-   git clone https://github.com/your-username/nand2tetris-js.git
-   cd nand2tetris-js
+   git clone https://github.com/sam1git/nand2tetrisProjects.git
+   cd nand2tetrisProjects
