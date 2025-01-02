@@ -1,0 +1,124 @@
+function SquareGame.new undefined
+push this 0
+pop this 0
+push this 1
+pop this 1
+push this 0
+return
+function SquareGame.dispose undefined
+push argument 0
+pop pointer 0
+pop temp 0
+push this 0
+pop temp 0
+push constant 0
+return
+function SquareGame.moveSquare undefined
+push argument 0
+pop pointer 0
+push this 1
+not
+if-goto L0
+pop temp 0
+goto L1
+label L0
+push this 1
+not
+if-goto L1
+pop temp 0
+goto L2
+label L1
+push this 1
+not
+if-goto L2
+pop temp 0
+goto L3
+label L2
+push this 1
+not
+if-goto L3
+pop temp 0
+goto L4
+label L3
+push this 1
+pop temp 0
+push constant 0
+return
+function SquareGame.run undefined
+push argument 0
+pop pointer 0
+push local 0
+pop local 1
+label L4
+push local 1
+not
+if-goto L5
+goto L4
+label L5
+push local 0
+not
+if-goto L6
+goto L5
+push local 0
+pop local 0
+pop temp 0
+label L6
+push local 0
+not
+if-goto L7
+push local 1
+pop local 1
+goto L8
+label L7
+push local 0
+not
+if-goto L8
+pop temp 0
+goto L9
+label L8
+push local 0
+not
+if-goto L9
+pop temp 0
+goto L10
+label L9
+push local 0
+not
+if-goto L10
+push local 1
+pop this 1
+goto L11
+label L10
+push local 0
+not
+if-goto L11
+push local 0
+pop this 1
+goto L12
+label L11
+push local 0
+not
+if-goto L12
+push this 0
+pop this 1
+goto L13
+label L12
+push local 0
+not
+if-goto L13
+push this 1
+pop this 1
+goto L14
+label L13
+label L14
+push local 0
+not
+if-goto L15
+goto L14
+push local 0
+pop local 0
+pop temp 0
+label L15
+label L16
+push constant 0
+return

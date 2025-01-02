@@ -1,0 +1,41 @@
+class Main {
+
+    function void main() {
+        var Menu a;
+        var int itemSelected;
+
+        let a = Menu.new("Chocolate", "IceCream", "Cookies", "Pastries", 2, 3, 2, 4);
+        
+        do Main.printItems(a);
+        do Output.println();
+        let itemSelected = Keyboard.readInt("What would you like to eat? ");
+        do Output.println();
+        do Output.printString("It will be ");
+        do Main.printPrice(itemSelected);
+        do a.dispose();
+        return;
+    }
+
+    function void printPrice(int price) {
+        do Output.printString("$");
+        do Output.printInt(price);
+        do Output.printString(".00");
+        return;
+    }
+
+    function void printItems(Menu a) {
+        do Output.printString("1. ");
+        do Output.printString(a.getName(1));
+        do Output.println();
+        do Output.printString("2. ");
+        do Output.printString(a.getName(2));
+        do Output.println();
+        do Output.printString("3. ");
+        do Output.printString(a.getName(3));
+        do Output.println();
+        do Output.printString("4. ");
+        do Output.printString(a.getName(4));
+        do Output.println();
+        return;
+    }
+}

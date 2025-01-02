@@ -1,0 +1,59 @@
+class Menu {
+    field String item1, item2, item3, item4;
+    field int price1, price2, price3, price4; 
+
+    constructor Menu new(String i1, String i2, String i3, String i4, int p1, int p2, int p3, int p4) {
+        let item1 = i1;
+        let price1 = p1;
+
+        let item2 = i2;
+        let price2 = p2;
+
+        let item3 = i3;
+        let price3 = p3;
+
+        let item4 = i4;
+        let price4 = p4;
+
+        return this;
+    }
+
+    method String getName(int a) {
+        var String name;
+        if (a = 1) {
+            let name = item1;
+        }
+        if (a = 2) {
+            let name = item2;
+        }
+        if (a = 3) {
+            let name = item3;
+        }
+        if (a = 4) {
+            let name = item4;
+        }
+        return name;
+    }
+
+    method int getPrice(int a) {
+        var int price;
+        if (a = 1) {
+            let price = price1;
+        }
+        if (a = 2) {
+            let price = price2;
+        }
+        if (a = 3) {
+            let price = price3;
+        }
+        if (a = 4) {
+            let price = price4;
+        }
+        return price;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

@@ -1,0 +1,173 @@
+function Square.new undefined
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 2
+pop temp 0
+push this 0
+return
+function Square.dispose undefined
+push argument 0
+pop pointer 0
+push argument 0
+pop temp 0
+push constant 0
+return
+function Square.draw undefined
+push argument 0
+pop pointer 0
+push this 0
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 1
+pop temp 0
+push constant 0
+return
+function Square.erase undefined
+push argument 0
+pop pointer 0
+push this 0
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 1
+pop temp 0
+push constant 0
+return
+function Square.incSize undefined
+push argument 0
+pop pointer 0
+push this 0
+not
+if-goto L0
+pop temp 0
+push this 2
+pop this 2
+pop temp 0
+goto L1
+label L0
+push constant 0
+return
+function Square.decSize undefined
+push argument 0
+pop pointer 0
+push this 2
+not
+if-goto L1
+pop temp 0
+push this 2
+pop this 2
+pop temp 0
+goto L2
+label L1
+push constant 0
+return
+function Square.moveUp undefined
+push argument 0
+pop pointer 0
+push this 1
+not
+if-goto L2
+push this 0
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 1
+pop temp 0
+push this 1
+pop this 1
+push this 0
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 1
+pop temp 0
+goto L3
+label L2
+push constant 0
+return
+function Square.moveDown undefined
+push argument 0
+pop pointer 0
+push this 1
+not
+if-goto L3
+push this 0
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 1
+pop temp 0
+push this 1
+pop this 1
+push this 0
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 1
+pop temp 0
+goto L4
+label L3
+push constant 0
+return
+function Square.moveLeft undefined
+push argument 0
+pop pointer 0
+push this 0
+not
+if-goto L4
+push this 0
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 1
+pop temp 0
+push this 0
+pop this 0
+push this 0
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 1
+pop temp 0
+goto L5
+label L4
+push constant 0
+return
+function Square.moveRight undefined
+push argument 0
+pop pointer 0
+push this 0
+not
+if-goto L5
+push this 0
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 1
+pop temp 0
+push this 0
+pop this 0
+push this 0
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 1
+pop temp 0
+goto L6
+label L5
+push constant 0
+return

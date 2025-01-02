@@ -1,0 +1,219 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/12/Screen.jack
+
+/**
+ * A library of functions for displaying graphics on the screen.
+ * The Hack physical screen consists of 512 rows (indexed 0..511, top to bottom)
+ * of 256 pixels each (indexed 0..255, left to right). The top left pixel on 
+ * the screen is indexed (0,0).
+ */
+class Screen {
+
+    static boolean color;
+    static Array powersOfTwo;
+
+    /** Initializes the Screen. */
+    function void init() {
+        var int i, bit;
+        let powersOfTwo = Array.new(16);
+        let i = 0;
+        let bit = 1;
+        while (i < 16) {
+            let powersOfTwo[i] = bit;
+            let bit = bit + bit;
+            let i = i + 1;
+        }
+        let color = true;
+        return;
+    }
+
+    /** Erases the entire screen. */
+    function void clearScreen() {
+        var int i;
+        let i = 16384;
+        while (i < 24576) {
+            do Memory.poke(i, 0);
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** Sets the current color, to be used for all subsequent drawXXX commands.
+     *  Black is represented by true, white by false. */
+    function void setColor(boolean b) {
+        let color = b;
+        return;
+    }
+
+    /** Draws the (x,y) pixel, using the current color. */
+    function void drawPixel(int x, int y) {
+        var int word, remainder, new;
+        let word = (y*32)+(x/16)+16384;
+        let remainder = x - ((x/16)*16);
+        let new = Screen._newWord(remainder, word);
+        do Memory.poke(word, new);
+        return;
+    }
+
+    function int _newWord(int remainder, int word) {
+        var int bit;
+        if (color) {
+            if (remainder = 15) {
+                let bit = -powersOfTwo[remainder];
+            } else {
+                let bit = powersOfTwo[remainder];
+            }
+            return (Memory.peek(word) | bit);
+        } else {
+            if (remainder = 15) {
+                let bit = powersOfTwo[remainder] -1;
+            } else {
+                let bit = -powersOfTwo[remainder] -1;
+            }
+            return (Memory.peek(word) & bit);
+        }
+    }
+
+    /** Draws a line from pixel (x1,y1) to pixel (x2,y2), using the current color. */
+    function void drawLine(int x1, int y1, int x2, int y2) {
+        var int dx, dy, xSign, ySign, a, b, diff;
+        if (y1 = y2) {
+            do Screen._hLine(x1, y1, x2);
+        } else {
+            if (x1 = x2) {
+                do Screen._vLine(x1, y1, y2);
+            } else {
+                let dx = Math.max(x2,x1) - Math.min(x2,x1);
+                let dy = Math.max(y2,y1) - Math.min(y2,y1);
+                if (y2 > y1) {
+                    let ySign = 1;
+                } else {
+                    let ySign = -1;
+                }
+                if (x2 > x1) {
+                    let xSign = 1;
+                } else {
+                    let xSign = -1;
+                }
+                let a = 0;
+                let b = 0;
+                let diff = 0;
+                while ((a<(dx+1)) & (b<(dy+1))) {
+                    do Screen.drawPixel(x1+(a*xSign), y1+(b*ySign));
+                    if (diff <  0) {
+                        let a = a + 1;
+                        let diff = diff + dy;
+                    } else {
+                        let b = b + 1;
+                        let diff = diff - dx;
+                    }
+                }
+            }
+        }
+        return;
+    }
+
+    function void _hLine(int x1, int y1, int x2) {
+        var int x, min, max, remainder, word, maxword, minword;
+
+        let min = Math.min(x1, x2);
+        let max = Math.max(x1, x2);
+
+        let minword = (y1*32)+(min/16)+16384;
+        let maxword = (y1*32)+(max/16)+16384;
+        let x = min;
+
+        if (minword = maxword) {
+            while (x < max) {
+                do Screen.drawPixel(x,y1);
+                let x = x + 1;
+            }
+            do Screen.drawPixel(max,y1);
+            return;
+        }
+
+        let remainder = x - ((x/16)*16);
+        if (remainder = 0) {
+            let word = (y1*32)+(x/16)+16384;
+            do Screen._fillword(word);
+        } else {
+            while (~(remainder = 0)) {
+                do Screen.drawPixel(x,y1);
+                let x = x + 1;
+                let remainder = x - ((x/16)*16);
+            }
+        }
+        let x = max;
+        let remainder = x - ((x/16)*16);
+        if (remainder = 15) {
+            let word = (y1*32)+(x/16)+16384;
+            do Screen._fillword(word);
+        } else {
+            while (~(remainder = 0)) {
+                do Screen.drawPixel(x,y1);
+                let x = x - 1;
+                let remainder = x - ((x/16)*16);
+            }
+            do Screen.drawPixel(x,y1);
+        }
+        let word = (y1*32)+(min/16)+16384 + 1; // minword + 1
+        let maxword = (y1*32)+(max/16)+16384;
+        while(word < maxword) {
+            do Screen._fillword(word);
+            let word = word + 1;
+        }
+        return;
+    }
+
+    function void _fillword(int word) {
+        if (color) {
+            do Memory.poke(word, -1);
+        } else {
+            do Memory.poke(word, 0);
+        }
+        return;
+    }
+
+    function void _vLine(int x1, int y1, int y2) {
+        var int min, max, remainder, word, maxword;
+
+        let min = Math.min(y1, y2);
+        let max = Math.max(y1, y2);
+        let word = (min*32)+(x1/16)+16384;
+        let maxword = (max*32)+(x1/16)+16384 + 1;
+        let remainder = x1 - ((x1/16)*16);
+        while (word < maxword) {
+            do Memory.poke(word, Screen._newWord(remainder, word));
+            let word = word + 32;
+        }
+        return;
+    }
+
+    /** Draws a filled rectangle whose top left corner is (x1, y1)
+     * and bottom right corner is (x2,y2), using the current color. */
+    function void drawRectangle(int x1, int y1, int x2, int y2) {
+        let y2 = y2+1;
+        while (y1 < y2) {
+            do Screen._hLine(x1, y1, x2);
+            let y1 = y1 + 1;
+        }
+        return;
+    }
+
+    /** Draws a filled circle of radius r<=181 around (x,y), using the current color. */
+    function void drawCircle(int x, int y, int r) {
+        var int dy, stop, r2;
+        if (r < 182) {
+            let dy = -r;
+            let stop = r+1;
+            let r2 = r*r;
+            while (dy < stop) {
+                do Screen._hLine((x - Math.sqrt(r2-(dy*dy))), (y + dy), (x + Math.sqrt(r2-(dy*dy))));
+                let dy = dy + 1;
+            }
+        }
+        return;
+    }
+}
